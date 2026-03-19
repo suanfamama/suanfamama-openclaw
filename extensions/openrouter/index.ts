@@ -1,4 +1,5 @@
 import type { StreamFn } from "@mariozechner/pi-agent-core";
+import { buildOpenRouterImageGenerationProvider } from "openclaw/plugin-sdk/image-generation";
 import {
   definePluginEntry,
   type ProviderResolveDynamicModelContext,
@@ -154,5 +155,6 @@ export default definePluginEntry({
       },
       isCacheTtlEligible: (ctx) => isOpenRouterCacheTtlModel(ctx.modelId),
     });
+    api.registerImageGenerationProvider(buildOpenRouterImageGenerationProvider());
   },
 });

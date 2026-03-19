@@ -12,3 +12,4 @@ export type {
 export { buildFalImageGenerationProvider } from "../../extensions/fal/image-generation-provider.js";
 export { buildGoogleImageGenerationProvider } from "../../extensions/google/image-generation-provider.js";
 export { buildOpenAIImageGenerationProvider } from "../../extensions/openai/image-generation-provider.js";
+export { buildOpenRouterImageGenerationProvider } from "../../extensions/openrouter/image-generation-provider.js";

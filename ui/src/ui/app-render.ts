@@ -80,6 +80,11 @@ import {
 } from "./controllers/skills.ts";
 import "./components/dashboard-header.ts";
 import { buildExternalLinkRel, EXTERNAL_LINK_TARGET } from "./external-link.ts";
+import {
+  applyFashionWorkflowModeDefaults,
+  buildFashionWorkflowChatMessage,
+  saveFashionWorkflowFormState,
+} from "./fashion-workflow.ts";
 import { icons } from "./icons.ts";
 import { normalizeBasePath, TAB_GROUPS, subtitleForTab, titleForTab } from "./navigation.ts";
 import { agentLogoUrl } from "./views/agents-utils.ts";
@@ -379,6 +384,14 @@ export function renderApp(state: AppViewState) {
     state.cronForm.deliveryMode === "webhook"
       ? rawDeliveryToSuggestions.filter((value) => isHttpUrl(value))
       : rawDeliveryToSuggestions;
+  const stageFashionWorkflowIntoChat = () => {
+    state.chatMessage = buildFashionWorkflowChatMessage(state.fashionWorkflow);
+    state.chatAttachments = [
+      ...state.chatAttachments,
+      ...state.fashionWorkflowAttachments.map((attachment) => ({ ...attachment })),
+    ];
+    state.fashionWorkflowAttachments = [];
+  };
 
   return html`
     ${renderCommandPalette({
@@ -638,6 +651,8 @@ export function renderApp(state: AppViewState) {
                 overviewLogLines: state.overviewLogLines,
                 showGatewayToken: state.overviewShowGatewayToken,
                 showGatewayPassword: state.overviewShowGatewayPassword,
+                fashionWorkflow: state.fashionWorkflow,
+                fashionWorkflowAttachments: state.fashionWorkflowAttachments,
                 onSettingsChange: (next) => state.applySettings(next),
                 onPasswordChange: (next) => (state.password = next),
                 onSessionKeyChange: (next) => {
@@ -661,6 +676,29 @@ export function renderApp(state: AppViewState) {
                 onRefresh: () => state.loadOverview(),
                 onNavigate: (tab) => state.setTab(tab as import("./navigation.ts").Tab),
                 onRefreshLogs: () => state.loadOverview(),
+                onFashionWorkflowChange: (patch) => {
+                  state.fashionWorkflow = { ...state.fashionWorkflow, ...patch };
+                  saveFashionWorkflowFormState(state.fashionWorkflow);
+                },
+                onFashionWorkflowModeChange: (mode) => {
+                  state.fashionWorkflow = applyFashionWorkflowModeDefaults(
+                    state.fashionWorkflow,
+                    mode,
+                  );
+                  saveFashionWorkflowFormState(state.fashionWorkflow);
+                },
+                onFashionWorkflowAttachmentsChange: (attachments) => {
+                  state.fashionWorkflowAttachments = attachments;
+                },
+                onFashionWorkflowSendToChat: () => {
+                  stageFashionWorkflowIntoChat();
+                  state.setTab("chat");
+                },
+                onFashionWorkflowGenerateNow: async () => {
+                  stageFashionWorkflowIntoChat();
+                  state.setTab("chat");
+                  await state.handleSendChat();
+                },
               })
             : nothing
         }

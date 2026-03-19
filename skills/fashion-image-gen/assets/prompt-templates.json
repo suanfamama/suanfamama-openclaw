@@ -1,0 +1,44 @@
+{
+  "modes": {
+    "model-styling": {
+      "goal": "Create a polished fashion marketing image with a model wearing the referenced product.",
+      "defaults": {
+        "background": "soft-neutral-studio",
+        "framing": "three-quarter",
+        "tone": "commercial"
+      }
+    },
+    "campaign": {
+      "goal": "Create an aspirational campaign image featuring the referenced product.",
+      "defaults": {
+        "background": "luxury-interior",
+        "framing": "full-body",
+        "tone": "editorial"
+      }
+    },
+    "product-detail": {
+      "goal": "Create a clean product-focused image that keeps attention on the referenced item.",
+      "defaults": {
+        "background": "white-studio",
+        "framing": "detail-close-up",
+        "tone": "commercial"
+      }
+    },
+    "variant-preview": {
+      "goal": "Create controlled alternate styling or material previews for the referenced product.",
+      "defaults": {
+        "background": "soft-neutral-studio",
+        "framing": "three-quarter",
+        "tone": "balanced"
+      }
+    }
+  },
+  "stylePresets": {
+    "minimal-luxury": "quiet luxury, restrained styling, refined materials, premium but understated mood",
+    "contemporary-streetwear": "modern street styling, clean attitude, urban context, current fashion energy",
+    "resort": "light resort styling, sunlit mood, effortless premium leisure feel",
+    "editorial-high-fashion": "editorial styling, elevated mood, dramatic but controlled fashion presentation",
+    "clean-ecommerce": "neutral commercial styling, clean lighting, product clarity first",
+    "department-store-catalog": "commercial catalog polish, accessible styling, clear product presentation"
+  }
+}

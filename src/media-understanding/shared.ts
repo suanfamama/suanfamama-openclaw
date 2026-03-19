@@ -1,5 +1,9 @@
 import type { GuardedFetchResult } from "../infra/net/fetch-guard.js";
-import { fetchWithSsrFGuard } from "../infra/net/fetch-guard.js";
+import {
+  fetchWithSsrFGuard,
+  withStrictGuardedFetchMode,
+  withTrustedEnvProxyGuardedFetchMode,
+} from "../infra/net/fetch-guard.js";
 import type { LookupFn, SsrFPolicy } from "../infra/net/ssrf.js";
 export { fetchWithTimeout } from "../utils/fetch-timeout.js";
 
@@ -39,17 +43,23 @@ export async function postTranscriptionRequest(params: {
   timeoutMs: number;
   fetchFn: typeof fetch;
   allowPrivateNetwork?: boolean;
+  useEnvProxy?: boolean;
 }) {
-  return fetchWithTimeoutGuarded(
-    params.url,
-    {
+  const options = {
+    url: params.url,
+    fetchImpl: params.fetchFn,
+    init: {
       method: "POST",
       headers: params.headers,
       body: params.body,
     },
-    params.timeoutMs,
-    params.fetchFn,
-    params.allowPrivateNetwork ? { ssrfPolicy: { allowPrivateNetwork: true } } : undefined,
+    timeoutMs: params.timeoutMs,
+    ...(params.allowPrivateNetwork ? { policy: { allowPrivateNetwork: true } } : {}),
+  };
+  return fetchWithSsrFGuard(
+    params.useEnvProxy
+      ? withTrustedEnvProxyGuardedFetchMode(options)
+      : withStrictGuardedFetchMode(options),
   );
 }
 
@@ -60,17 +70,23 @@ export async function postJsonRequest(params: {
   timeoutMs: number;
   fetchFn: typeof fetch;
   allowPrivateNetwork?: boolean;
+  useEnvProxy?: boolean;
 }) {
-  return fetchWithTimeoutGuarded(
-    params.url,
-    {
+  const options = {
+    url: params.url,
+    fetchImpl: params.fetchFn,
+    init: {
       method: "POST",
       headers: params.headers,
       body: JSON.stringify(params.body),
     },
-    params.timeoutMs,
-    params.fetchFn,
-    params.allowPrivateNetwork ? { ssrfPolicy: { allowPrivateNetwork: true } } : undefined,
+    timeoutMs: params.timeoutMs,
+    ...(params.allowPrivateNetwork ? { policy: { allowPrivateNetwork: true } } : {}),
+  };
+  return fetchWithSsrFGuard(
+    params.useEnvProxy
+      ? withTrustedEnvProxyGuardedFetchMode(options)
+      : withStrictGuardedFetchMode(options),
   );
 }
 

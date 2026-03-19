@@ -59,6 +59,7 @@ import type { DevicePairingList } from "./controllers/devices.ts";
 import type { ExecApprovalRequest } from "./controllers/exec-approval.ts";
 import type { ExecApprovalsFile, ExecApprovalsSnapshot } from "./controllers/exec-approvals.ts";
 import type { SkillMessage } from "./controllers/skills.ts";
+import { loadFashionWorkflowFormState } from "./fashion-workflow.ts";
 import type { GatewayBrowserClient, GatewayHelloOk } from "./gateway.ts";
 import type { Tab } from "./navigation.ts";
 import { loadSettings, type UiSettings } from "./storage.ts";
@@ -342,6 +343,8 @@ export class OpenClawApp extends LitElement {
   @state() usageLogFilterTools: string[] = [];
   @state() usageLogFilterHasTools = false;
   @state() usageLogFilterQuery = "";
+  @state() fashionWorkflow = loadFashionWorkflowFormState();
+  @state() fashionWorkflowAttachments: ChatAttachment[] = [];
 
   // Non-reactive (don’t trigger renders just for timer bookkeeping).
   usageQueryDebounceTimer: number | null = null;

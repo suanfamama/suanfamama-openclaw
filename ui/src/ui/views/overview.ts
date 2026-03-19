@@ -2,6 +2,7 @@ import { html, nothing } from "lit";
 import { t, i18n, SUPPORTED_LOCALES, type Locale, isSupportedLocale } from "../../i18n/index.ts";
 import type { EventLogEntry } from "../app-events.ts";
 import { buildExternalLinkRel, EXTERNAL_LINK_TARGET } from "../external-link.ts";
+import type { FashionWorkflowFormState } from "../fashion-workflow.ts";
 import { formatRelativeTimestamp, formatDurationHuman } from "../format.ts";
 import type { GatewayHelloOk } from "../gateway.ts";
 import { icons } from "../icons.ts";
@@ -14,6 +15,8 @@ import type {
   SessionsUsageResult,
   SkillStatusReport,
 } from "../types.ts";
+import type { ChatAttachment } from "../ui-types.ts";
+import { renderFashionWorkflowPanel } from "./fashion-workflow.ts";
 import { renderOverviewAttention } from "./overview-attention.ts";
 import { renderOverviewCards } from "./overview-cards.ts";
 import { renderOverviewEventLog } from "./overview-event-log.ts";
@@ -47,6 +50,8 @@ export type OverviewProps = {
   overviewLogLines: string[];
   showGatewayToken: boolean;
   showGatewayPassword: boolean;
+  fashionWorkflow: FashionWorkflowFormState;
+  fashionWorkflowAttachments: ChatAttachment[];
   onSettingsChange: (next: UiSettings) => void;
   onPasswordChange: (next: string) => void;
   onSessionKeyChange: (next: string) => void;
@@ -56,6 +61,11 @@ export type OverviewProps = {
   onRefresh: () => void;
   onNavigate: (tab: string) => void;
   onRefreshLogs: () => void;
+  onFashionWorkflowChange: (patch: Partial<FashionWorkflowFormState>) => void;
+  onFashionWorkflowModeChange: (mode: FashionWorkflowFormState["mode"]) => void;
+  onFashionWorkflowAttachmentsChange: (attachments: ChatAttachment[]) => void;
+  onFashionWorkflowSendToChat: () => void;
+  onFashionWorkflowGenerateNow: () => void;
 };
 
 export function renderOverview(props: OverviewProps) {
@@ -389,6 +399,16 @@ export function renderOverview(props: OverviewProps) {
       cronStatus: props.cronStatus,
       presenceCount: props.presenceCount,
       onNavigate: props.onNavigate,
+    })}
+
+    ${renderFashionWorkflowPanel({
+      state: props.fashionWorkflow,
+      attachments: props.fashionWorkflowAttachments,
+      onChange: props.onFashionWorkflowChange,
+      onModeChange: props.onFashionWorkflowModeChange,
+      onAttachmentsChange: props.onFashionWorkflowAttachmentsChange,
+      onSendToChat: props.onFashionWorkflowSendToChat,
+      onGenerateNow: props.onFashionWorkflowGenerateNow,
     })}
 
     ${renderOverviewAttention({ items: props.attentionItems })}

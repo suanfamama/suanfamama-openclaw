@@ -169,8 +169,9 @@ export function buildGoogleImageGenerationProvider(): ImageGenerationProvider {
           },
         },
         timeoutMs: 60_000,
-        fetchFn: fetch,
+        fetchFn: globalThis.fetch,
         allowPrivateNetwork: allowPrivate,
+        useEnvProxy: true,
       });
 
       try {

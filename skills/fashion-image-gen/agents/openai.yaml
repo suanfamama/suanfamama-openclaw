@@ -1,0 +1,4 @@
+interface:
+  display_name: "Fashion Image Gen"
+  short_description: "Fashion visuals from product photos"
+  default_prompt: "Use $fashion-image-gen to turn these garment photos into polished fashion marketing visuals."
