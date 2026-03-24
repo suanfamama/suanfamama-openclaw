@@ -1,0 +1,6 @@
+# Agent configuration for Suanfamama backend health check
+model: sonnet-4.6
+provider: anthropic
+thinking: low
+temperature: 0
+maxTokens: 500

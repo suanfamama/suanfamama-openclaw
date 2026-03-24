@@ -1,11 +1,11 @@
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth";
-import { resolveProviderAttributionHeaders } from "../../agents/provider-attribution.js";
+import type { ImageGenerationProvider } from "openclaw/plugin-sdk/image-generation";
+import type { ImageGenerationProviderPlugin } from "openclaw/plugin-sdk/image-generation-core";
 import {
   assertOkOrThrowHttpError,
   normalizeBaseUrl,
   postJsonRequest,
-} from "../media-understanding/shared.js";
-import type { ImageGenerationProviderPlugin } from "../../plugins/types.js";
+} from "openclaw/plugin-sdk/media-understanding";
+import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth";
 
 const DEFAULT_OPENROUTER_IMAGE_BASE_URL = "https://openrouter.ai/api/v1";
 const DEFAULT_OPENROUTER_IMAGE_MODEL = "openai/gpt-image-1";
@@ -73,7 +73,6 @@ export function buildOpenRouterImageGenerationProvider(): ImageGenerationProvide
       const headers = new Headers({
         Authorization: `Bearer ${auth.apiKey}`,
         "Content-Type": "application/json",
-        ...resolveProviderAttributionHeaders("openrouter"),
       });
       const model = req.model?.trim() || DEFAULT_OPENROUTER_IMAGE_MODEL;
       const { response, release } = await postJsonRequest({

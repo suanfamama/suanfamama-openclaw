@@ -6,6 +6,7 @@ import { i18n } from "../../i18n/index.ts";
 import { getSafeLocalStorage } from "../../local-storage.ts";
 import { renderChatSessionSelect } from "../app-render.helpers.ts";
 import type { AppViewState } from "../app-view-state.ts";
+import { loadFashionWorkflowFormState } from "../fashion-workflow.ts";
 import type { GatewayBrowserClient } from "../gateway.ts";
 import type { ModelCatalogEntry } from "../types.ts";
 import type { SessionsListResult } from "../types.ts";
@@ -237,6 +238,13 @@ function createOverviewProps(overrides: Partial<OverviewProps> = {}): OverviewPr
     overviewLogLines: [],
     showGatewayToken: false,
     showGatewayPassword: false,
+    fashionWorkflow: loadFashionWorkflowFormState(),
+    fashionWorkflowAttachments: [],
+    onFashionWorkflowChange: () => undefined,
+    onFashionWorkflowModeChange: () => undefined,
+    onFashionWorkflowAttachmentsChange: () => undefined,
+    onFashionWorkflowSendToChat: () => undefined,
+    onFashionWorkflowGenerateNow: () => undefined,
     onSettingsChange: () => undefined,
     onPasswordChange: () => undefined,
     onSessionKeyChange: () => undefined,

@@ -88,7 +88,13 @@ function formatModelDirection(input: FashionPromptInput): string | null {
     return null;
   }
   const details = [input.presentation, input.ageBand, input.bodyType, input.lookDirection].filter(
-    (value): value is string => Boolean(value),
+    (
+      value,
+    ): value is
+      | FashionModelPresentation
+      | FashionAgeBand
+      | FashionBodyType
+      | FashionLookDirection => Boolean(value),
   );
   if (details.length === 0) {
     return input.mode === "model-styling" || input.mode === "campaign"
