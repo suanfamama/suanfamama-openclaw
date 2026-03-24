@@ -258,6 +258,8 @@ const INFRASTRUCTURE_SECTION_KEYS = [
   "canvasHost",
   "discovery",
   "media",
+  "acp",
+  "mcp",
 ] as const;
 const AI_AGENTS_SECTION_KEYS = [
   "agents",
