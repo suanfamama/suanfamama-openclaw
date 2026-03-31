@@ -1,4 +1,4 @@
-import * as providerAuth from "openclaw/plugin-sdk/provider-auth";
+import * as providerAuthRuntime from "openclaw/plugin-sdk/provider-auth-runtime";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 const fetchGuardMocks = vi.hoisted(() => ({
@@ -20,7 +20,7 @@ import { buildGoogleImageGenerationProvider } from "./image-generation-provider.
 import { __testing as geminiWebSearchTesting } from "./src/gemini-web-search-provider.js";
 
 function mockGoogleApiKeyAuth() {
-  vi.spyOn(providerAuth, "resolveApiKeyForProvider").mockResolvedValue({
+  vi.spyOn(providerAuthRuntime, "resolveApiKeyForProvider").mockResolvedValue({
     apiKey: "google-test-key",
     source: "env",
     mode: "api-key",
@@ -65,7 +65,7 @@ describe("Google image-generation provider", () => {
   });
 
   it("generates image buffers from the Gemini generateContent API", async () => {
-    vi.spyOn(providerAuth, "resolveApiKeyForProvider").mockResolvedValue({
+    vi.spyOn(providerAuthRuntime, "resolveApiKeyForProvider").mockResolvedValue({
       apiKey: "google-test-key",
       source: "env",
       mode: "api-key",
@@ -142,7 +142,7 @@ describe("Google image-generation provider", () => {
   });
 
   it("accepts OAuth JSON auth and inline_data responses", async () => {
-    vi.spyOn(providerAuth, "resolveApiKeyForProvider").mockResolvedValue({
+    vi.spyOn(providerAuthRuntime, "resolveApiKeyForProvider").mockResolvedValue({
       apiKey: JSON.stringify({ token: "oauth-token" }),
       source: "profile",
       mode: "token",

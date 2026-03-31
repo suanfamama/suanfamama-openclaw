@@ -310,10 +310,7 @@ export function renderApp(state: AppViewState) {
   // Gate: require successful gateway connection before showing the dashboard.
   // The gateway URL confirmation overlay is always rendered so URL-param flows still work.
   if (!state.connected) {
-    return html`
-      ${renderLoginGate(state)}
-      ${renderGatewayUrlConfirmation(state)}
-    `;
+    return html` ${renderLoginGate(state)} ${renderGatewayUrlConfirmation(state)} `;
   }
 
   const presenceCount = state.presenceEntries.length;
@@ -430,7 +427,11 @@ export function renderApp(state: AppViewState) {
       },
     })}
     <div
-      class="shell ${isChat ? "shell--chat" : ""} ${chatFocus ? "shell--chat-focus" : ""} ${navCollapsed ? "shell--nav-collapsed" : ""} ${navDrawerOpen ? "shell--nav-drawer-open" : ""} ${state.onboarding ? "shell--onboarding" : ""}"
+      class="shell ${isChat ? "shell--chat" : ""} ${
+        chatFocus ? "shell--chat-focus" : ""
+      } ${navCollapsed ? "shell--nav-collapsed" : ""} ${
+        navDrawerOpen ? "shell--nav-drawer-open" : ""
+      } ${state.onboarding ? "shell--onboarding" : ""}"
     >
       <button
         type="button"
@@ -485,12 +486,16 @@ export function renderApp(state: AppViewState) {
                   navCollapsed
                     ? nothing
                     : html`
-                        <img class="sidebar-brand__logo" src="${agentLogoUrl(basePath)}" alt="OpenClaw" />
-                        <span class="sidebar-brand__copy">
-                          <span class="sidebar-brand__eyebrow">${t("nav.control")}</span>
-                          <span class="sidebar-brand__title">OpenClaw</span>
-                        </span>
-                      `
+                      <img
+                        class="sidebar-brand__logo"
+                        src="${agentLogoUrl(basePath)}"
+                        alt="OpenClaw"
+                      />
+                      <span class="sidebar-brand__copy">
+                        <span class="sidebar-brand__eyebrow">${t("nav.control")}</span>
+                        <span class="sidebar-brand__title">OpenClaw</span>
+                      </span>
+                    `
                 }
               </div>
               <button
@@ -504,7 +509,9 @@ export function renderApp(state: AppViewState) {
                 title="${navCollapsed ? t("nav.expand") : t("nav.collapse")}"
                 aria-label="${navCollapsed ? t("nav.expand") : t("nav.collapse")}"
               >
-                <span class="nav-collapse-toggle__icon" aria-hidden="true">${navCollapsed ? icons.panelLeftOpen : icons.panelLeftClose}</span>
+                <span class="nav-collapse-toggle__icon" aria-hidden="true"
+                  >${navCollapsed ? icons.panelLeftOpen : icons.panelLeftClose}</span
+                >
               </button>
             </div>
             <div class="sidebar-shell__body">
@@ -519,28 +526,30 @@ export function renderApp(state: AppViewState) {
                       ${
                         !navCollapsed
                           ? html`
-                              <button
-                                class="nav-section__label"
-                                @click=${() => {
-                                  const next = { ...state.settings.navGroupsCollapsed };
-                                  next[group.label] = !isGroupCollapsed;
-                                  state.applySettings({
-                                    ...state.settings,
-                                    navGroupsCollapsed: next,
-                                  });
-                                }}
-                                aria-expanded=${showItems}
+                            <button
+                              class="nav-section__label"
+                              @click=${() => {
+                                const next = { ...state.settings.navGroupsCollapsed };
+                                next[group.label] = !isGroupCollapsed;
+                                state.applySettings({
+                                  ...state.settings,
+                                  navGroupsCollapsed: next,
+                                });
+                              }}
+                              aria-expanded=${showItems}
+                            >
+                              <span class="nav-section__label-text"
+                                >${t(`nav.${group.label}`)}</span
                               >
-                                <span class="nav-section__label-text">${t(`nav.${group.label}`)}</span>
-                                <span class="nav-section__chevron">
-                                  ${icons.chevronDown}
-                                </span>
-                              </button>
-                            `
+                              <span class="nav-section__chevron"> ${icons.chevronDown} </span>
+                            </button>
+                          `
                           : nothing
                       }
                       <div class="nav-section__items">
-                        ${group.tabs.map((tab) => renderTab(state, tab, { collapsed: navCollapsed }))}
+                        ${group.tabs.map((tab) =>
+                          renderTab(state, tab, { collapsed: navCollapsed }),
+                        )}
                       </div>
                     </section>
                   `;
@@ -560,15 +569,13 @@ export function renderApp(state: AppViewState) {
                   ${
                     !navCollapsed
                       ? html`
-                          <span class="nav-item__text">${t("common.docs")}</span>
-                          <span class="nav-item__external-icon">${icons.externalLink}</span>
-                        `
+                        <span class="nav-item__text">${t("common.docs")}</span>
+                        <span class="nav-item__external-icon">${icons.externalLink}</span>
+                      `
                       : nothing
                   }
                 </a>
-                <div class="sidebar-mode-switch">
-                  ${renderTopbarThemeModeToggle(state)}
-                </div>
+                <div class="sidebar-mode-switch">${renderTopbarThemeModeToggle(state)}</div>
                 ${(() => {
                   const version = state.hello?.server?.version ?? "";
                   return version
@@ -577,13 +584,11 @@ export function renderApp(state: AppViewState) {
                           ${
                             !navCollapsed
                               ? html`
-                                  <span class="sidebar-version__label">${t("common.version")}</span>
-                                  <span class="sidebar-version__text">v${version}</span>
-                                  ${renderSidebarConnectionStatus(state)}
-                                `
-                              : html`
-                                  ${renderSidebarConnectionStatus(state)}
-                                `
+                                <span class="sidebar-version__label">${t("common.version")}</span>
+                                <span class="sidebar-version__text">v${version}</span>
+                                ${renderSidebarConnectionStatus(state)}
+                              `
+                              : html` ${renderSidebarConnectionStatus(state)} `
                           }
                         </div>
                       `
@@ -600,13 +605,15 @@ export function renderApp(state: AppViewState) {
           state.updateAvailable.latestVersion !== state.updateAvailable.currentVersion &&
           !isUpdateBannerDismissed(state.updateAvailable)
             ? html`<div class="update-banner callout danger" role="alert">
-              <strong>Update available:</strong> v${state.updateAvailable.latestVersion}
-              (running v${state.updateAvailable.currentVersion}).
+              <strong>Update available:</strong> v${state.updateAvailable.latestVersion} (running
+              v${state.updateAvailable.currentVersion}).
               <button
                 class="btn btn--sm update-banner__btn"
                 ?disabled=${state.updateRunning || !state.connected}
                 @click=${() => runUpdate(state)}
-              >${state.updateRunning ? "Updating…" : "Update now"}</button>
+              >
+                ${state.updateRunning ? "Updating…" : "Update now"}
+              </button>
               <button
                 class="update-banner__close"
                 type="button"
@@ -635,12 +642,15 @@ export function renderApp(state: AppViewState) {
                 ${isChat ? nothing : html`<div class="page-sub">${subtitleForTab(state.tab)}</div>`}
               </div>
               <div class="page-meta">
-                ${state.lastError ? html`<div class="pill danger">${state.lastError}</div>` : nothing}
+                ${
+                  state.lastError
+                    ? html`<div class="pill danger">${state.lastError}</div>`
+                    : nothing
+                }
                 ${isChat ? renderChatControls(state) : nothing}
               </div>
             </section>`
         }
-
         ${
           state.tab === "overview"
             ? renderOverview({
@@ -665,8 +675,6 @@ export function renderApp(state: AppViewState) {
                 overviewLogLines: state.overviewLogLines,
                 showGatewayToken: state.overviewShowGatewayToken,
                 showGatewayPassword: state.overviewShowGatewayPassword,
-                fashionWorkflow: state.fashionWorkflow,
-                fashionWorkflowAttachments: state.fashionWorkflowAttachments,
                 onSettingsChange: (next) => state.applySettings(next),
                 onPasswordChange: (next) => (state.password = next),
                 onSessionKeyChange: (next) => {
@@ -690,6 +698,8 @@ export function renderApp(state: AppViewState) {
                 onRefresh: () => state.loadOverview(),
                 onNavigate: (tab) => state.setTab(tab as import("./navigation.ts").Tab),
                 onRefreshLogs: () => state.loadOverview(),
+                fashionWorkflow: state.fashionWorkflow,
+                fashionWorkflowAttachments: state.fashionWorkflowAttachments,
                 onFashionWorkflowChange: (patch) => {
                   state.fashionWorkflow = { ...state.fashionWorkflow, ...patch };
                   saveFashionWorkflowFormState(state.fashionWorkflow);
@@ -716,7 +726,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "channels"
             ? lazyRender(lazyChannels, (m) =>
@@ -757,7 +766,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "instances"
             ? lazyRender(lazyInstances, (m) =>
@@ -771,7 +779,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "sessions"
             ? lazyRender(lazySessions, (m) =>
@@ -859,9 +866,7 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${renderUsageTab(state)}
-
         ${
           state.tab === "cron"
             ? lazyRender(lazyCron, (m) =>
@@ -963,7 +968,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "agents"
             ? lazyRender(lazyAgents, (m) =>
@@ -1365,7 +1369,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "skills"
             ? lazyRender(lazySkills, (m) =>
@@ -1394,7 +1397,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "nodes"
             ? lazyRender(lazyNodes, (m) =>
@@ -1475,7 +1477,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "chat"
             ? renderChat({
@@ -1596,7 +1597,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "config"
             ? renderConfig({
@@ -1694,7 +1694,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "communications"
             ? renderConfig({
@@ -1761,7 +1760,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "appearance"
             ? renderConfig({
@@ -1828,7 +1826,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "automation"
             ? renderConfig({
@@ -1895,7 +1892,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "infrastructure"
             ? renderConfig({
@@ -1962,7 +1958,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "aiAgents"
             ? renderConfig({
@@ -2029,7 +2024,6 @@ export function renderApp(state: AppViewState) {
               })
             : nothing
         }
-
         ${
           state.tab === "debug"
             ? lazyRender(lazyDebug, (m) =>
@@ -2053,7 +2047,6 @@ export function renderApp(state: AppViewState) {
               )
             : nothing
         }
-
         ${
           state.tab === "logs"
             ? lazyRender(lazyLogs, (m) =>
@@ -2079,9 +2072,7 @@ export function renderApp(state: AppViewState) {
             : nothing
         }
       </main>
-      ${renderExecApprovalPrompt(state)}
-      ${renderGatewayUrlConfirmation(state)}
-      ${nothing}
+      ${renderExecApprovalPrompt(state)} ${renderGatewayUrlConfirmation(state)} ${nothing}
     </div>
   `;
 }
