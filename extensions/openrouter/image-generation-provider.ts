@@ -1,11 +1,11 @@
 import type { ImageGenerationProvider } from "openclaw/plugin-sdk/image-generation";
 import type { ImageGenerationProviderPlugin } from "openclaw/plugin-sdk/image-generation-core";
+import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/image-generation-core";
 import {
   assertOkOrThrowHttpError,
   normalizeBaseUrl,
   postJsonRequest,
-} from "openclaw/plugin-sdk/media-understanding";
-import { resolveApiKeyForProvider } from "openclaw/plugin-sdk/provider-auth";
+} from "openclaw/plugin-sdk/provider-http";
 
 const DEFAULT_OPENROUTER_IMAGE_BASE_URL = "https://openrouter.ai/api/v1";
 const DEFAULT_OPENROUTER_IMAGE_MODEL = "openai/gpt-image-1";
